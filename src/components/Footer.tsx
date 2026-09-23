@@ -1,5 +1,6 @@
 import React from 'react';
 import { PageId } from '../types';
+import { SPA_NAME, SPA_LOGO_URL } from '../data/siteData';
 
 interface FooterProps {
   onNavigate: (page: PageId) => void;
@@ -64,6 +65,20 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onShare }) => {
       {/* Navigation bar and Need Help box */}
       <div className="footer2">
         <div className="max-w-6xl mx-auto px-4">
+          <div className="flex flex-col items-center justify-center pt-2 mb-4">
+            <img
+              src={SPA_LOGO_URL}
+              alt={`${SPA_NAME} Logo`}
+              className="w-12 h-12 rounded-full object-cover border-2 border-[#a28321] shadow mb-1.5 bg-[#3a0202]"
+              onError={(e) => {
+                (e.target as HTMLElement).style.display = 'none';
+              }}
+            />
+            <span className="text-[#ffdf88] font-bold text-lg uppercase tracking-wider font-['Patrick_Hand',cursive]">
+              {SPA_NAME}
+            </span>
+          </div>
+
           <div className="widget mb-4">
             <div className="widget-body">
               <p className="simplenav font25 text-center flex flex-wrap justify-center items-center gap-x-2 gap-y-1">

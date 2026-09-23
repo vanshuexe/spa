@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { PageId } from '../types';
-import { SPA_NAME, SPA_PHONE, SPA_WHATSAPP_LINK } from '../data/siteData';
+import { SPA_NAME, SPA_PHONE, SPA_WHATSAPP_LINK, SPA_LOGO_URL } from '../data/siteData';
 
 interface GuestChatPageProps {
   onNavigate: (page: PageId) => void;
@@ -124,7 +124,15 @@ export const GuestChatPage: React.FC<GuestChatPageProps> = ({
       {step === 'form' ? (
         <div className="max-w-xl mx-auto my-6">
           <div className="panel panel-default bg-[#f5f0e8] border-2 border-[#840000] p-6 sm:p-8 rounded-lg shadow-md">
-            <div className="panel-body">
+            <div className="panel-body text-center">
+              <img
+                src={SPA_LOGO_URL}
+                alt="Doorstep Royale Spa Logo"
+                className="w-16 h-16 rounded-full object-cover border-2 border-[#a28321] shadow-md mx-auto mb-3 bg-[#3a0202]"
+                onError={(e) => {
+                  (e.target as HTMLElement).style.display = 'none';
+                }}
+              />
               <h4 className="thin text-center text-xl font-bold text-[#840000] mb-2" id="ge-title">
                 Start a chat with our coordinator
               </h4>
@@ -214,9 +222,14 @@ export const GuestChatPage: React.FC<GuestChatPageProps> = ({
           {/* Chat Header */}
           <div className="bg-[#5a0101] text-white p-3.5 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-[#81d742] text-[#5a0101] font-bold flex items-center justify-center text-lg shadow">
-                DR
-              </div>
+              <img
+                src={SPA_LOGO_URL}
+                alt="Doorstep Royale Spa"
+                className="w-10 h-10 rounded-full object-cover border-2 border-[#ffdf88] shadow shrink-0 bg-[#3a0202]"
+                onError={(e) => {
+                  (e.target as HTMLElement).style.display = 'none';
+                }}
+              />
               <div>
                 <h4 className="m-0 text-[#81d742] font-bold text-lg font-['Patrick_Hand']">
                   Doorstep Royale Spa Coordinator

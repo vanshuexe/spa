@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PageId } from '../types';
+import { SPA_NAME, SPA_TAGLINE, SPA_LOGO_URL } from '../data/siteData';
 
 interface NavbarProps {
   currentPage: PageId;
@@ -49,17 +50,22 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
           id="navbarBrandLogo"
           href="/"
           onClick={(e) => handleNavClick(e, 'home')}
-          className="navbar-brand cursor-pointer flex items-center gap-2 py-1 no-underline"
+          className="navbar-brand cursor-pointer flex items-center gap-2.5 py-1 no-underline group"
         >
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#840000] to-[#550000] flex items-center justify-center text-[#e0d5c1] shadow border border-[#a28321] shrink-0">
-            <span className="text-xl leading-none">👑</span>
-          </div>
+          <img
+            src={SPA_LOGO_URL}
+            alt={`${SPA_NAME} Logo`}
+            className="w-10 h-10 sm:w-11 sm:h-11 rounded-full object-cover border-2 border-[#a28321] shadow-md shrink-0 bg-[#3a0202] group-hover:scale-105 transition-transform"
+            onError={(e) => {
+              (e.target as HTMLElement).style.display = 'none';
+            }}
+          />
           <div className="flex flex-col text-left leading-tight">
-            <span className="text-[#840000] font-bold text-lg sm:text-xl tracking-wide uppercase font-['Patrick_Hand',cursive]">
-              DOORSTEP ROYALE SPA
+            <span className="text-[#840000] font-bold text-lg sm:text-xl tracking-wide uppercase font-['Patrick_Hand',cursive] group-hover:text-[#a00000] transition-colors">
+              {SPA_NAME}
             </span>
             <span className="text-[#228b22] text-[10px] sm:text-[11px] font-bold tracking-wider font-sans uppercase">
-              Luxury Wellness, At Your Doorstep
+              {SPA_TAGLINE}
             </span>
           </div>
         </a>

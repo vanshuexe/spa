@@ -4,6 +4,7 @@ import {
   THERAPISTS_DATA,
   BANGALORE_AREAS,
   SPA_NAME,
+  SPA_LOGO_URL,
   SPA_PHONE,
   SPA_WHATSAPP_LINK,
   PRICING_DATA,
@@ -137,6 +138,14 @@ export const BookingPage: React.FC<BookingPageProps> = ({
   return (
     <article className="col-xs-12 maincontent col-md-12 col-sm-12 max-w-5xl mx-auto px-4 sm:px-6">
       <header className="page-header text-center my-4">
+        <img
+          src={SPA_LOGO_URL}
+          alt="Doorstep Royale Spa Logo"
+          className="w-20 h-20 rounded-full object-cover border-2 border-[#a28321] shadow-lg mx-auto mb-2 bg-[#3a0202]"
+          onError={(e) => {
+            (e.target as HTMLElement).style.display = 'none';
+          }}
+        />
         <h1 className="page-title text-3xl font-bold text-[#840000]">
           Doorstep Royale Spa Bangalore
         </h1>

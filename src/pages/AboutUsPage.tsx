@@ -3,6 +3,7 @@ import { PageId } from '../types';
 import {
   SPA_NAME,
   SPA_TAGLINE,
+  SPA_LOGO_URL,
   SPA_PHONE,
   SPA_WHATSAPP_LINK,
   PRICING_DATA,
@@ -78,6 +79,14 @@ export const AboutUsPage: React.FC<AboutUsPageProps> = ({ onNavigate }) => {
 
       {/* Header */}
       <div className="border-title text-center my-4">
+        <img
+          src={SPA_LOGO_URL}
+          alt="Doorstep Royale Spa Logo"
+          className="w-20 h-20 rounded-full object-cover border-2 border-[#a28321] shadow-lg mx-auto mb-2 bg-[#3a0202]"
+          onError={(e) => {
+            (e.target as HTMLElement).style.display = 'none';
+          }}
+        />
         <h1 className="text-3xl font-bold text-[#840000]">About Doorstep Royale Spa</h1>
         <div className="ico-border">
           <i className="ico-bg flower"></i>

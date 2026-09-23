@@ -2,6 +2,7 @@ import { TherapistProfile, TestimonialItem, ServiceItem, PricingTier } from '../
 
 export const SPA_NAME = 'DOORSTEP ROYALE SPA';
 export const SPA_TAGLINE = 'Luxury Wellness, At Your Doorstep';
+export const SPA_LOGO_URL = 'https://ik.imagekit.io/fdhgiehjz/royalspalogo.jpeg';
 export const SPA_PHONE = '9180471825';
 export const SPA_PHONE_FORMATTED = '+91 9180471825';
 export const SPA_WHATSAPP_LINK =
