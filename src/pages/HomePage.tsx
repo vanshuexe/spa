@@ -10,6 +10,8 @@ import {
   SPA_WHATSAPP_LINK,
   PRICING_DATA,
   SERVICES_DATA,
+  MANDATORY_ADVANCE_AMOUNT,
+  TRAVEL_FARE_NOTE,
 } from '../data/siteData';
 
 interface HomePageProps {
@@ -299,6 +301,31 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               </button>
             </div>
           ))}
+        </div>
+        {/* Pricing Policies Callout */}
+        <div className="bg-[#fff3cd] border-2 border-[#e6a100] rounded-xl p-4 sm:p-5 my-6 shadow-sm">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="space-y-2 text-center sm:text-left">
+              <h5 className="font-bold text-[#840000] text-base sm:text-lg flex items-center justify-center sm:justify-start gap-2 m-0">
+                <span>🚘</span> Doorstep Travel & Advance Payment Policy
+              </h5>
+              <div className="text-xs sm:text-sm text-[#4a3200] space-y-1">
+                <p className="m-0 font-medium">
+                  • <strong>Travelling Charges:</strong> Travel charges are not included in the service fee. Client will cover 2-way auto fare from therapist location to client location and back (based on actual auto fare).
+                </p>
+                <p className="m-0 font-medium">
+                  • <strong>Mandatory Deposit:</strong> To avoid cancellation, ₹{MANDATORY_ADVANCE_AMOUNT} advance is mandatory to lock your slot.
+                </p>
+              </div>
+            </div>
+            <button
+              type="button"
+              className="btn btn-action text-xs sm:text-sm px-5 py-2.5 flex-shrink-0 shadow hover:scale-105 transition"
+              onClick={() => onNavigate('booking')}
+            >
+              Book & Pay ₹{MANDATORY_ADVANCE_AMOUNT} Slot Deposit
+            </button>
+          </div>
         </div>
       </FadeInSection>
 

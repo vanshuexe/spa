@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { PageId } from '../types';
+import { PageId, AppointmentItem } from '../types';
+import { AppointmentManagementView } from '../components/AppointmentManagementView';
 import {
   THERAPISTS_DATA,
   BANGALORE_AREAS,
@@ -8,6 +9,9 @@ import {
   SPA_PHONE,
   SPA_WHATSAPP_LINK,
   PRICING_DATA,
+  MANDATORY_ADVANCE_AMOUNT,
+  MANDATORY_ADVANCE_NOTE,
+  TRAVEL_FARE_NOTE,
 } from '../data/siteData';
 
 interface BookingPageProps {
@@ -19,7 +23,8 @@ export const BookingPage: React.FC<BookingPageProps> = ({
   onNavigate,
   onShowAlert,
 }) => {
-  const [activeTab, setActiveTab] = useState<'profiles' | 'book' | 'login' | 'register'>('book');
+  const [activeTab, setActiveTab] = useState<'profiles' | 'book' | 'appointments' | 'login' | 'register'>('book');
+
 
   // Booking form state
   const [selectedTherapistId, setSelectedTherapistId] = useState<string>('any');
@@ -74,6 +79,61 @@ export const BookingPage: React.FC<BookingPageProps> = ({
     '07:00 PM',
   ];
 
+  // User pending appointments list
+  const [userPendingAppointments, setUserPendingAppointments] = useState<AppointmentItem[]>([
+    {
+      id: 'p-1',
+      srNo: 1,
+      therapistName: 'Mary',
+      therapistId: 'mary',
+      clientName: 'Anand Kumar',
+      date: '2026-09-27',
+      time: '11:00 AM',
+      address: 'Prestige Lavender Fields',
+      flatNumber: '402',
+      floorNumber: '4th Floor',
+      streetName: 'Varthur Main Road',
+      crossStreetName: 'Near Forum Value Mall',
+      locality: 'Whitefield',
+      amount: '₹2,100',
+      status: 'pending',
+    },
+    {
+      id: 'p-2',
+      srNo: 2,
+      therapistName: 'Pari',
+      therapistId: 'pari',
+      clientName: 'Siddharth V',
+      date: '2026-09-28',
+      time: '03:00 PM',
+      address: 'RMZ Galleria Residences',
+      flatNumber: '12B',
+      floorNumber: '12th Floor',
+      streetName: 'Yelahanka Main Rd',
+      crossStreetName: 'Opposite Police Station',
+      locality: 'Yelahanka',
+      amount: '₹1,799',
+      status: 'pending',
+    },
+    {
+      id: 'p-3',
+      srNo: 3,
+      therapistName: 'Kangnu',
+      therapistId: 'kangnu',
+      clientName: 'Vikram Seth',
+      date: '2026-09-29',
+      time: '05:00 PM',
+      address: 'Sobha Green Apartments',
+      flatNumber: '301',
+      floorNumber: '3rd Floor',
+      streetName: '100 Feet Road',
+      crossStreetName: 'Near Toit Pub',
+      locality: 'Indiranagar',
+      amount: '₹3,400',
+      status: 'pending',
+    },
+  ]);
+
   const handleBookingSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!clientName.trim() || !clientPhone.trim()) {
@@ -93,20 +153,44 @@ export const BookingPage: React.FC<BookingPageProps> = ({
     const bookingRef = `DRS-BLR-${Math.floor(100000 + Math.random() * 900000)}`;
     const hotelNote =
       locationType === 'hotel-assist'
-        ? '\n(Hotel assistance requested: +Rs 1300 approx)'
+        ? '\n• Hotel assistance fee: +₹1,300 approx'
         : '';
 
+    const remainingAmount = currentPriceInfo.price - MANDATORY_ADVANCE_AMOUNT;
+
+    // Create new pending appointment
+    const newAppointmentItem: AppointmentItem = {
+      id: `p-${Date.now()}`,
+      srNo: userPendingAppointments.length + 1,
+      therapistName,
+      therapistId: selectedTherapistId,
+      clientName,
+      date: bookingDate,
+      time: bookingTime,
+      address: address.trim() || `${area}, Bangalore`,
+      flatNumber: 'Door / Flat 101',
+      floorNumber: '1st Floor',
+      streetName: 'Main Road',
+      crossStreetName: 'Near Landmark',
+      locality: area,
+      amount: `₹${currentPriceInfo.price.toLocaleString()}`,
+      status: 'pending',
+    };
+
+    setUserPendingAppointments((prev) => [...prev, newAppointmentItem]);
+
     onShowAlert(
-      'Appointment Confirmed!',
-      `Thank you ${clientName}! Your doorstep session for a ${selectedDuration} ${serviceStyle} with ${therapistName} on ${bookingDate} at ${bookingTime} in ${area} has been successfully scheduled.\n\nBooking Reference: ${bookingRef}\nTotal Rate: ₹${currentPriceInfo.price.toLocaleString()}${hotelNote}\n\nOur coordinator will call you from 9180471825 shortly to reconfirm.`
+      'Appointment Slot Reserved!',
+      `Thank you ${clientName}!\n\nYour doorstep session for a ${selectedDuration} ${serviceStyle} with ${therapistName} on ${bookingDate} at ${bookingTime} in ${area} has been reserved.\n\n📌 Booking Reference: ${bookingRef}\n• Total Service Fee: ₹${currentPriceInfo.price.toLocaleString()}\n• Mandatory Advance Required: ₹${MANDATORY_ADVANCE_AMOUNT} (Required to confirm slot & avoid cancellation)\n• Remaining Balance Payable After Session: ₹${remainingAmount.toLocaleString()}${hotelNote}\n• Travelling Charges: Travel charges are NOT included in the service fee. Client will cover 2-way auto fare from therapist location to client location and back (based on actual auto fare).\n\nPlease pay the ₹${MANDATORY_ADVANCE_AMOUNT} advance to lock your time slot. Our coordinator will call you from ${SPA_PHONE} shortly to share UPI / payment details.`
     );
 
-    // Reset fields
+    // Reset fields & switch to appointments tab
     setClientName('');
     setClientPhone('');
     setClientEmail('');
     setAddress('');
     setSpecialInstructions('');
+    setActiveTab('appointments');
   };
 
   const handleLoginSubmit = (e: React.FormEvent) => {
@@ -200,6 +284,18 @@ export const BookingPage: React.FC<BookingPageProps> = ({
           📅 Book Appointment
         </button>
         <button
+          id="tabAppointmentsBtn"
+          type="button"
+          className={`px-5 py-2.5 rounded-t-lg font-bold text-base transition ${
+            activeTab === 'appointments'
+              ? 'bg-[#5a0101] text-[#81d742] shadow'
+              : 'bg-white/50 text-[#840000] hover:bg-white/80'
+          }`}
+          onClick={() => setActiveTab('appointments')}
+        >
+          📋 Appointments Dashboard
+        </button>
+        <button
           id="tabViewProfilesBtn"
           type="button"
           className={`px-5 py-2.5 rounded-t-lg font-bold text-base transition ${
@@ -237,10 +333,19 @@ export const BookingPage: React.FC<BookingPageProps> = ({
         </button>
       </div>
 
+      {/* TAB: APPOINTMENTS DASHBOARD */}
+      {activeTab === 'appointments' && (
+        <AppointmentManagementView
+          pendingAppointments={userPendingAppointments}
+          onShowAlert={onShowAlert}
+          onNavigateToBooking={() => setActiveTab('book')}
+        />
+      )}
+
       {/* TAB 1: ONLINE BOOKING FORM */}
       {activeTab === 'book' && (
         <div className="panel max-w-3xl mx-auto my-4 bg-[#f5f0e8] border-2 border-[#840000] p-6 sm:p-8 rounded-lg shadow-md">
-          <div className="border-b border-[#a28321]/40 pb-3 mb-6 flex items-center justify-between flex-wrap gap-2">
+          <div className="border-b border-[#a28321]/40 pb-3 mb-4 flex items-center justify-between flex-wrap gap-2">
             <div>
               <h4 className="text-2xl font-bold text-[#840000] m-0">
                 Book a Doorstep Royale Spa Session
@@ -251,6 +356,29 @@ export const BookingPage: React.FC<BookingPageProps> = ({
             </div>
             <div className="bg-[#5a0101] text-[#ffdf88] px-4 py-2 rounded text-base font-bold shadow border border-[#a28321]">
               ₹{currentPriceInfo.price.toLocaleString()} ({selectedDuration})
+            </div>
+          </div>
+
+          {/* Important Travel & Advance Payment Policy Banner */}
+          <div className="bg-[#fff3cd] border-2 border-[#e6a100] rounded-lg p-4 mb-6 shadow-sm">
+            <h5 className="text-base font-bold text-[#840000] flex items-center gap-2 m-0 mb-2">
+              <span>⚠️</span> Important Booking & Travel Terms
+            </h5>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm text-[#4a3200]">
+              <div className="flex items-start gap-2 bg-white/70 p-2.5 rounded border border-[#e6a100]/40">
+                <span className="text-base">🛺</span>
+                <div>
+                  <strong className="block text-[#840000]">Travelling Charges (Not Included in Fee)</strong>
+                  <span>Client covers <strong>2-way auto fare</strong> from therapist location to client location & back (based on actual auto fare).</span>
+                </div>
+              </div>
+              <div className="flex items-start gap-2 bg-white/70 p-2.5 rounded border border-[#e6a100]/40">
+                <span className="text-base">🔒</span>
+                <div>
+                  <strong className="block text-[#840000]">Mandatory Slot Deposit</strong>
+                  <span>To avoid cancellation, <strong>₹500 advance deposit</strong> is mandatory to confirm your booking.</span>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -489,17 +617,49 @@ export const BookingPage: React.FC<BookingPageProps> = ({
               />
             </div>
 
+            {/* Price & Deposit Summary Card */}
+            <div className="bg-[#f0e6d2] border-2 border-[#a28321] rounded-lg p-4 my-4 shadow-sm text-sm">
+              <h5 className="font-bold text-[#840000] text-base mb-2 border-b border-[#a28321]/40 pb-1 flex items-center justify-between">
+                <span>🧾 Payment & Cost Breakdown Summary</span>
+                <span className="text-xs bg-[#840000] text-[#ffdf88] px-2.5 py-0.5 rounded font-bold">
+                  {selectedDuration}
+                </span>
+              </h5>
+              <div className="space-y-2 text-xs sm:text-sm text-[#333]">
+                <div className="flex justify-between items-center">
+                  <span>Total Massage Session Fee:</span>
+                  <span className="font-bold text-[#840000]">₹{currentPriceInfo.price.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between items-center text-[#840000] font-semibold bg-white/70 p-2 rounded border border-[#a28321]/40">
+                  <span className="flex items-center gap-1.5">
+                    <span className="text-base">💳</span> Mandatory Advance Deposit:
+                  </span>
+                  <span className="font-bold text-base text-[#228b22]">₹{MANDATORY_ADVANCE_AMOUNT} (Payable Now)</span>
+                </div>
+                <div className="flex justify-between items-center text-[#228b22] font-semibold">
+                  <span>Remaining Balance Payable Post-Session:</span>
+                  <span className="font-bold">₹{(currentPriceInfo.price - MANDATORY_ADVANCE_AMOUNT).toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between items-center pt-2 border-t border-[#a28321]/30 text-xs">
+                  <span className="flex items-center gap-1 font-bold text-[#840000]">
+                    <span>🛺</span> Travelling Charges (Not Included in Service Fee):
+                  </span>
+                  <span className="font-extrabold text-[#840000]">2-Way Auto Fare (Actual Fare - Client Pays)</span>
+                </div>
+              </div>
+            </div>
+
             <div className="bg-[#e8decb] p-3 rounded text-xs text-[#228b22] leading-relaxed">
-              <strong>Doorstep Royale Spa Guarantee:</strong> Transparent fixed rates (₹1,799 for 60m, ₹2,100 for 90m, ₹3400 for 120m). No unexpected surge pricing. The therapist brings sanitized fresh sheets, aromatic herbal oils, pain relief ointment, and ambient music directly to you.
+              <strong>Doorstep Royale Spa Guarantee:</strong> Transparent fixed rates (₹1,799 for 60m, ₹2,100 for 90m, ₹3,400 for 120m). No unexpected surge pricing. The therapist brings sanitized fresh sheets, aromatic herbal oils, pain relief ointment, and ambient music directly to you.
             </div>
 
             <div className="text-center pt-2">
               <button
                 id="submitBookingFormBtn"
                 type="submit"
-                className="btn btn-action text-lg px-10 py-3 shadow-md hover:scale-105 transition"
+                className="btn btn-action text-lg px-8 sm:px-10 py-3 shadow-md hover:scale-105 transition"
               >
-                Confirm Doorstep Appointment (₹{currentPriceInfo.price.toLocaleString()} for {selectedDuration})
+                Confirm Appointment Slot (₹{MANDATORY_ADVANCE_AMOUNT} Mandatory Advance)
               </button>
             </div>
           </form>

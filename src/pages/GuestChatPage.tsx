@@ -48,7 +48,7 @@ export const GuestChatPage: React.FC<GuestChatPageProps> = ({
       {
         id: 'm-welcome-2',
         sender: 'admin',
-        text: `Our doorstep sessions are offered daily from 9:00 AM to 7:00 PM. Rates: 60 Minutes (₹1,799), 90 Minutes (₹2,100), 120 Minutes (₹3,400). You can also call or WhatsApp us anytime at ${SPA_PHONE}.`,
+        text: `Our doorstep sessions run 9:00 AM - 7:00 PM.\n• Service Rates: 60m (₹1,799), 90m (₹2,100), 120m (₹3,400)\n• Travelling Charges: Travel charges are not included in service fee. Client will cover 2-way auto fare from therapist location to client location and back (based on actual auto fare).\n• Slot Deposit: ₹500 advance payment is mandatory to confirm booking & avoid cancellation.\n\nCall/WhatsApp: ${SPA_PHONE}`,
         time: now,
       },
     ]);
@@ -77,9 +77,20 @@ export const GuestChatPage: React.FC<GuestChatPageProps> = ({
       let replyText =
         `Thank you for reaching out! Our Doorstep Royale Spa coordinator has received your message. You can book directly online or call/WhatsApp us directly at ${SPA_PHONE}. Would you like to check therapist availability for today?`;
 
-      if (lower.includes('price') || lower.includes('cost') || lower.includes('rate') || lower.includes('charge')) {
+      if (
+        lower.includes('price') ||
+        lower.includes('cost') ||
+        lower.includes('rate') ||
+        lower.includes('charge') ||
+        lower.includes('fare') ||
+        lower.includes('travel') ||
+        lower.includes('advance') ||
+        lower.includes('deposit') ||
+        lower.includes('auto') ||
+        lower.includes('cancellation')
+      ) {
         replyText =
-          'Our transparent rates: 60 Minutes (₹1,799), 90 Minutes (₹2,100 - most popular), and 120 Minutes (₹3,400). Express sessions: 30 Mins (₹999), 45 Mins (₹1,299). All-inclusive, no hidden charges!';
+          'Our Rates & Policies:\n• 60 Mins (₹1,799) | 90 Mins (₹2,100) | 120 Mins (₹3,400)\n• Travelling Charges: Not included in service fee. Client covers 2-way auto fare from therapist location to client location & back (based on actual auto fare).\n• Slot Deposit: To avoid cancellation, ₹500 advance deposit is mandatory to lock your session.';
       } else if (lower.includes('phone') || lower.includes('contact') || lower.includes('call') || lower.includes('number')) {
         replyText =
           `You can call or WhatsApp Doorstep Royale Spa directly at ${SPA_PHONE} (9:00 AM to 7:00 PM daily).`;
@@ -88,10 +99,10 @@ export const GuestChatPage: React.FC<GuestChatPageProps> = ({
           'Yes, our team features skilled, certified female wellness therapists trained in Swedish, Deep Tissue, and Aromatherapy techniques. You can view therapist profiles and book on our booking page.';
       } else if (lower.includes('hotel') || lower.includes('room') || lower.includes('location')) {
         replyText =
-          'We provide doorstep service to your private home, apartment, villa, or hotel room across all neighborhoods of Bangalore.';
+          'We provide doorstep service to your private home, apartment, villa, or hotel room across all neighborhoods of Bangalore. Client should pay 2-way auto fare from therapist location to customer location.';
       } else if (lower.includes('book') || lower.includes('appointment') || lower.includes('time')) {
         replyText =
-          `To finalize your appointment, you can click "Book Online", or reply here with your preferred time slot (9 AM - 7 PM) and Bangalore location. Or call ${SPA_PHONE} for instant confirmation!`;
+          `To finalize your appointment, click "Book Online", or reply here with your preferred time slot (9 AM - 7 PM) and Bangalore location. Note: ₹500 advance deposit is required to avoid cancellation. Call ${SPA_PHONE} for instant confirmation!`;
       } else if (lower.includes('style') || lower.includes('swedish') || lower.includes('deep tissue') || lower.includes('aroma')) {
         replyText =
           'We offer Swedish Massage, Deep Tissue Therapy, Aromatherapy with essential oils, Relaxation Massage, Head/Neck/Shoulder, and Foot Reflexology.';

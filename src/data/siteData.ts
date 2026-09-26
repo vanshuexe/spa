@@ -8,6 +8,12 @@ export const SPA_PHONE_FORMATTED = '+91 9180471825';
 export const SPA_WHATSAPP_LINK =
   'https://wa.me/919180471825?text=Hello%20Doorstep%20Royale%20Spa,%20I%20would%20like%20to%20book%20a%20luxury%20home%20spa%20experience';
 
+export const MANDATORY_ADVANCE_AMOUNT = 500;
+export const MANDATORY_ADVANCE_NOTE =
+  'To avoid cancellation, a ₹500 advance payment is mandatory to confirm your booking slot.';
+export const TRAVEL_FARE_NOTE =
+  'The therapist’s travel charges are not included in the service fee. The client will need to cover the two-way auto fare from the therapist’s location to the client’s location and back (based on actual auto fare).';
+
 export const PRICING_DATA: PricingTier[] = [
   {
     duration: '60 Minutes',

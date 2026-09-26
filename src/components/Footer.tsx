@@ -158,7 +158,14 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onShare }) => {
             </div>
           </div>
 
-          <div className="text-center mt-6 flex flex-wrap items-center justify-center gap-4">
+          <div className="text-center my-3 text-xs text-[#ffdf88]/90 max-w-2xl mx-auto px-2 leading-relaxed">
+            <span>🛺 <strong>Travelling Charges:</strong> Not included in service fee. Client covers 2-way auto fare from therapist location to client location & back (based on actual auto fare).</span>
+            <span className="hidden sm:inline mx-2">•</span>
+            <br className="sm:hidden" />
+            <span>🔒 <strong>Deposit:</strong> To avoid cancellation, ₹500 advance deposit is mandatory to confirm booking.</span>
+          </div>
+
+          <div className="text-center mt-4 flex flex-wrap items-center justify-center gap-4">
             <button
               id="footerNeedHelpBtn"
               type="button"

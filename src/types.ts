@@ -68,3 +68,24 @@ export interface BookingData {
   notes: string;
   price: number;
 }
+
+export interface AppointmentItem {
+  id: string;
+  srNo: number;
+  therapistName: string;
+  therapistId?: string;
+  clientName?: string;
+  date: string;
+  time: string;
+  address: string;
+  flatNumber: string;
+  floorNumber: string;
+  streetName: string;
+  crossStreetName: string;
+  locality: string;
+  amount: string;
+  status: 'confirmed' | 'pending' | 'rejected';
+  bookingDate?: string;
+  comments?: string;
+}
+
